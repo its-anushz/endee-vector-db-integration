@@ -1,0 +1,26 @@
+services:
+  endee:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+      args:
+        BUILD_ARCH: avx2
+        DEBUG: "false"
+    container_name: endee-oss
+    ports:
+      - "8080:8080"
+    ulimits:
+      nofile: 100000
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200m"
+        max-file: "5"
+    environment:
+      NDD_NUM_THREADS: 0
+    volumes:
+      - endee-data:/data
+    restart: unless-stopped
+
+volumes:
+  endee-data:
